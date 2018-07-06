@@ -1,0 +1,174 @@
+version: 2
+references:
+  python_3_6_2_image: &python_3_6_2_image
+    working_directory: ~/circleci
+    docker:
+      - image: indigoag-docker.jfrog.io/indigo/python:3.6.2-indigo
+        auth:
+          username: $IA_ARTIFACTORY_USERNAME
+          password: $IA_ARTIFACTORY_KEY
+  restore_workspace: &restore_workspace
+    restore_cache:
+      name: Restore workspace cache
+      key: repo-{{ .Environment.CIRCLE_SHA1 }}
+
+## TODO
+#  restore_pip_cache: &restore_pip_cache
+#    restore_cache:
+#      name: Restoring pip cache
+#      key: 20171208-{{ .Branch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+#  restore_pip_global_cache: &restore_pip_global_cache
+#    restore_cache:
+#      name: Restoring pip global cache
+#      key: 20171220-global-cache
+  ssh_hosts: &ssh_hosts
+    run:
+      name: Add Github KnownHosts
+      command: |
+        mkdir -p ~/.ssh/ && ssh-keyscan github.com >> ~/.ssh/known_hosts
+jobs:
+  build_and_test:
+    working_directory: ~/circleci
+    docker:
+      - image: indigoag-docker.jfrog.io/indigo/python:3.6.2-indigo
+        auth:
+          username: $IA_ARTIFACTORY_USERNAME
+          password: $IA_ARTIFACTORY_KEY
+    environment:
+      PIPENV_VENV_IN_PROJECT: 1
+    steps:
+      - checkout
+#      - *restore_pip_cache
+#      - *restore_pip_global_cache
+      - run:
+          name: Download Dependencies
+          command: |
+            yarn install
+            pip3 install pipenv
+            pipenv shell
+            pipenv sync
+      - run:
+          name: Running tests
+          command: |
+            pipenv shell
+            tools/test/test.sh
+      - run:
+          name: Uploading coverage report
+          command: |
+            pipenv shell
+            codecov
+      - store_artifacts:
+          path: tmp/coverage_html/
+          destination: coverage
+      - save_cache:
+          key: repo-{{ .Environment.CIRCLE_SHA1 }}
+          paths: ~/circleci
+
+## TODO
+#      - save_cache:
+#          key: 20171208-{{ .Branch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+#          paths:
+#            - "local-env"
+#      - save_cache:
+#          key: 20171220-global-cache
+#          paths: ~/.cache/pip
+
+  deploy:
+    <<: *python_3_6_2_image
+    steps:
+      - *restore_workspace
+
+## TODO
+#      - *restore_pip_cache
+#      - *restore_pip_global_cache
+      - setup_remote_docker
+      - run:
+          name: Deploy
+          no_output_timeout: 30m
+          command: |
+            IA_PROJECT_NAME=DATA_SCRIPTS ../automation/tools/configure-environment.sh
+            pip3 install pipenv
+            pipenv shell
+            ./tools/deploy.sh 
+      - run:
+          name: Release Notes
+          command: |
+            if [[ $CIRCLE_BRANCH == "master" ]]; then
+              ../automation/tools/release-notification.sh '#squad-data'
+            fi
+
+  merge_master:
+    <<: *python_3_6_2_image
+    steps:
+      - *restore_workspace
+      - *ssh_hosts
+      - run:
+          no_output_timeout: 30m
+          command: |
+            ../automation/tools/release-prod.sh
+  post_deploy:
+    <<: *python_3_6_2_image
+    steps:
+      - *restore_workspace
+      - *ssh_hosts
+      - run:
+          command: |
+            ../automation/tools/release-tags.sh
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build_and_test:
+          context: org-global
+          filters:
+              branches:
+                only:
+                  - develop
+                  - master
+      - deploy:
+          requires:
+            - build_and_test
+          filters:
+              branches:
+                only:
+                  - develop
+                  - master
+          context: org-global
+      - hold_for_master:
+          type: approval
+          requires:
+            - deploy
+          filters:
+            branches:
+              only:
+                - develop
+          context: org-global
+      - merge_master:
+            requires:
+              - hold_for_master
+            context: org-global
+      - post_deploy:
+            requires:
+              - deploy
+            filters:
+              branches:
+                only:
+                  - master
+            context: org-global
+  build_and_deploy_to_dev:
+    jobs:
+      - build_and_test:
+          context: org-global
+          filters:
+            branches:
+              ignore:
+                  - develop
+                  - master
+      - hold_for_dev:
+          type: approval
+          requires:
+            - build_and_test
+      - deploy:
+          requires:
+            - hold_for_dev
+          context: org-global

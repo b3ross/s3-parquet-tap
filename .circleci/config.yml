@@ -119,7 +119,7 @@ workflows:
   build_and_deploy:
     jobs:
       - build_and_test:
-          context: org-global
+#          context: org-global
           filters:
               branches:
                 only:
@@ -133,7 +133,7 @@ workflows:
                 only:
                   - develop
                   - master
-          context: org-global
+#          context: org-global
       - hold_for_master:
           type: approval
           requires:
@@ -142,11 +142,11 @@ workflows:
             branches:
               only:
                 - develop
-          context: org-global
+#          context: org-global
       - merge_master:
             requires:
               - hold_for_master
-            context: org-global
+#            context: org-global
       - post_deploy:
             requires:
               - deploy
@@ -154,11 +154,11 @@ workflows:
               branches:
                 only:
                   - master
-            context: org-global
+#            context: org-global
   build_and_deploy_to_dev:
     jobs:
       - build_and_test:
-          context: org-global
+#          context: org-global
           filters:
             branches:
               ignore:
@@ -171,4 +171,4 @@ workflows:
       - deploy:
           requires:
             - hold_for_dev
-          context: org-global
+#          context: org-global

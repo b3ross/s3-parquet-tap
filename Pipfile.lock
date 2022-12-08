@@ -24,10 +24,11 @@
         },
         "certifi": {
             "hashes": [
-                "sha256:13e698f54293db9f89122b0581843a782ad0934a4fe0172d2a980ba77fc61bb7",
-                "sha256:9fa520c1bacfb634fa7af20a76bcbd3d5fb390481724c597da32c719a7dca4b0"
+                "sha256:35824b4c3a97115964b408844d64aa14db1cc518f6562e8d7261699d1350a9e3",
+                "sha256:4ad3232f5e926d6718ec31cfc1fcadfde020920e278684144551c91769c7bc18"
             ],
-            "version": "==2018.4.16"
+            "index": "pypi",
+            "version": "==2022.12.7"
         },
         "chardet": {
             "hashes": [
@@ -59,10 +60,11 @@
         },
         "pbr": {
             "hashes": [
-                "sha256:4f2b11d95917af76e936811be8361b2b19616e5ef3b55956a429ec7864378e0c",
-                "sha256:e0f23b61ec42473723b2fec2f33fb12558ff221ee551962f01dd4de9053c2055"
+                "sha256:b97bc6695b2aff02144133c2e7399d5885223d42b7912ffaec2ca3898e673bfe",
+                "sha256:db2317ff07c84c4c63648c9064a79fe9d9f5c7ce85a9099d4b6258b3db83225a"
             ],
-            "version": "==4.1.0"
+            "markers": "python_version >= '2.6'",
+            "version": "==5.11.0"
         },
         "psutil": {
             "hashes": [
@@ -82,10 +84,11 @@
         },
         "python-dateutil": {
             "hashes": [
-                "sha256:1adb80e7a782c12e52ef9a8182bebeb73f1d7e24e374397af06fb4956c8dc5c0",
-                "sha256:e27001de32f627c22380a688bcc43ce83504a7bc5da472209b4c70f02829f0b8"
+                "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86",
+                "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"
             ],
-            "version": "==2.7.3"
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "version": "==2.8.2"
         },
         "pytz": {
             "hashes": [
@@ -105,13 +108,21 @@
             "hashes": [
                 "sha256:01a22d49ddd9a168b136f26cac87d9a335660ce07aa5c630b8e3607d6f4325e7",
                 "sha256:11d91b88cc1e9645c79f0f6fd2961684249af963e2bbff5a00061ed4bbf55379",
+                "sha256:1975e6b621fe1c2b9321c56476e8ebe1b851006517c1d67041b378950374694c",
+                "sha256:2dc7fb8c0c0ff9483ce31b93b700b1fa60aca9d099e6aca9813f28ff131ccf59",
                 "sha256:36b0de42e3a8a51086c339cc803f6ac7a9d1d5254066d680956a195ca12cf0d8",
                 "sha256:38c2b563cd03363e7cb2bbba6c20ae4eaafd853a83954c8c8dd345ee391787bf",
+                "sha256:6be48181337ac5f5d9f48c9c504f317e245519318992122a05c40e482a721d59",
                 "sha256:7df76ae6cac4a62ad5295f9a9131857077d84cb15fad2011acb2ce7410476009",
                 "sha256:7f53ab6a675594f237ce7372c1edf742a6acb158149ed3259c5fffc5b613dc94",
                 "sha256:86aa9fd492230c4b8b6814fcf089b36ffba2cec4d0635c8c642135b9067ebbd7",
+                "sha256:8ae8cdcbe49e29ddfdae0ab81c1f6c070706d18fcee86371352d0d54b47ad8ec",
                 "sha256:8d73b96a6ee7c81fd49dac7225e3846fd60b54a0b5b93a0aaea04c5a5d2e7bf2",
-                "sha256:a6939199c30b78ae31e62e6913f0e12cb71a4a5ad67c259e0a98688df027a5de"
+                "sha256:97cc43ef4cb18a2725f6e26d22b96f8ca50872a195bde32707dcb284f89c1d4d",
+                "sha256:a6939199c30b78ae31e62e6913f0e12cb71a4a5ad67c259e0a98688df027a5de",
+                "sha256:c76d55d78dc8b06c96fd08c6cc5e2b0b650799627d3f9ca4ad23f40db72d5f6d",
+                "sha256:ebbd52b59948350ad66205e66b299fcca0e0821ed275c21262c522f4a6cea9d2",
+                "sha256:f60f01b16215568a08611eb6a4d61d76c4173c3d69aac9cad593777056c284d5"
             ],
             "version": "==3.11.1"
         },
@@ -124,10 +135,11 @@
         },
         "six": {
             "hashes": [
-                "sha256:70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9",
-                "sha256:832dc0e10feb1aa2c68dcc57dbb658f1c7e65b9b61af69048abc87a2db00a0eb"
+                "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926",
+                "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"
             ],
-            "version": "==1.11.0"
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "version": "==1.16.0"
         },
         "target-stitch": {
             "hashes": [
